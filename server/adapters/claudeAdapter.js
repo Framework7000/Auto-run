@@ -24,14 +24,20 @@ class ClaudeAdapter extends BaseAdapter {
     return !loggedOut;
   }
 
-  async submit(promptText) {
+  async submit(promptText, { priorOutput } = {}) {
     const page = this.page || (await this.openContext());
     await page.goto(this.config.url, { waitUntil: "domcontentloaded" });
 
     if (!(await this.checkLoggedIn())) {
       throw new Error(
-        `Not logged in to Claude. Run "npm run login claude" first, log in by hand, then retry.`
+        `Not logged in to Claude. Run "npm run login claude-browser" first, log in by hand, then retry.`
       );
+    }
+
+    await this.assertNotRateLimited(page);
+
+    if (priorOutput) {
+      promptText = `${promptText}\n\n--- Output from the previous step, work from this ---\n${priorOutput}`;
     }
 
     const composer = page.locator(SELECTORS.composer).first();

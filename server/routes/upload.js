@@ -17,11 +17,10 @@ function pickColumn(row, names) {
 }
 
 /**
- * Accepts a spreadsheet (xlsx/xls/csv) where each row is one task.
+ * Accepts a spreadsheet (xlsx/xls/csv) where each row is one task —
+ * the offline equivalent of the live Google Sheets sync.
  * Recognized columns (case-insensitive, others are ignored):
- *   title, description/task, tags (comma-separated), agent
- * "description" (or "task") is required; everything else is optional
- * and falls back to auto-routing by tags.
+ *   s/n, title, description/task, platform (comma-separated for a chain)
  */
 router.post("/", upload.single("file"), (req, res) => {
   if (!req.file) return res.status(400).json({ error: "file is required (field name: file)" });
@@ -46,12 +45,14 @@ router.post("/", upload.single("file"), (req, res) => {
       return;
     }
     const title = pickColumn(row, ["title", "name"]);
-    const tagsRaw = pickColumn(row, ["tags", "tag", "category"]);
-    const tags = tagsRaw ? tagsRaw.split(",").map((t) => t.trim()).filter(Boolean) : [];
-    const agentId = pickColumn(row, ["agent", "assignee"]) || undefined;
+    const ref = pickColumn(row, ["s/n", "sn", "id", "ref"]);
+    const platformRaw = pickColumn(row, ["platform", "tool", "agent", "ai"]);
+    const platforms = platformRaw
+      ? platformRaw.split(",").map((p) => p.trim()).filter(Boolean)
+      : [];
 
     try {
-      const task = newTask({ title, description, tags, agentId: agentId || undefined });
+      const task = newTask({ ref, title, description, platforms });
       saveTask(task);
       created.push(task);
     } catch (err) {

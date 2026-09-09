@@ -2,29 +2,58 @@
   "agents": [
     {
       "id": "claude",
-      "name": "Claude (claude.ai)",
+      "name": "Claude",
+      "adapter": "claudeApiAdapter",
+      "aliases": ["claude", "claude api", "anthropic"],
+      "color": "#d97757",
+      "accounts": [{ "id": "gradenext", "label": "GradeNext (API key)" }],
+      "note": "Runs unattended via the Anthropic API. Needs ANTHROPIC_API_KEY."
+    },
+    {
+      "id": "claude-browser",
+      "name": "Claude (browser session)",
       "adapter": "claudeAdapter",
+      "aliases": ["claude browser", "claude max", "claude.ai"],
       "url": "https://claude.ai/new",
-      "tags": ["coding", "analysis", "writing", "reasoning", "default"],
-      "color": "#d97757"
+      "color": "#d97757",
+      "accounts": [
+        { "id": "gradenext", "label": "GradeNext Claude Max" },
+        { "id": "personal", "label": "Personal" }
+      ],
+      "note": "Uses your logged-in claude.ai session instead of an API key. No API billing, but subject to the ToS caveat in the README."
     },
     {
       "id": "chatgpt",
-      "name": "ChatGPT (chatgpt.com)",
+      "name": "ChatGPT",
       "adapter": "chatgptAdapter",
+      "aliases": ["chatgpt", "gpt", "openai", "chat gpt"],
       "url": "https://chatgpt.com/",
-      "tags": ["writing", "brainstorm", "general"],
-      "color": "#10a37f"
+      "color": "#10a37f",
+      "accounts": [
+        { "id": "gradenext-go", "label": "GradeNext ChatGPT Go" },
+        { "id": "personal-plus", "label": "Personal ChatGPT Plus" }
+      ]
     },
     {
       "id": "canva",
       "name": "Canva",
       "adapter": "canvaAdapter",
+      "aliases": ["canva"],
       "url": "https://www.canva.com/",
-      "tags": ["design", "image", "presentation"],
       "color": "#8b3dff",
+      "accounts": [{ "id": "gradenext", "label": "GradeNext" }],
       "disabled": true,
-      "note": "Design-canvas UI, not a chat box. Not automated in v0.1 — see docs/adding-an-agent.md to build this adapter."
+      "note": "Design canvas, not a chat box — needs a per-workflow adapter. See docs/adding-an-agent.md"
+    },
+    {
+      "id": "antigravity",
+      "name": "Antigravity / video",
+      "adapter": "videoAdapter",
+      "aliases": ["antigravity", "anti gravity", "video", "google flow", "veo"],
+      "color": "#4285f4",
+      "accounts": [{ "id": "default", "label": "Default" }],
+      "disabled": true,
+      "note": "Antigravity is a desktop app and cannot be browser-driven. This slot calls a video-generation API instead — see docs/video-setup.md"
     }
   ],
   "defaultAgentId": "claude"

@@ -8,55 +8,50 @@
 </head>
 <body>
   <header>
-    <h1>Auto-Run</h1>
-    <p class="subtitle">Give it a task once. It runs your agents, brings back a report, and waits for your call.</p>
+    <div>
+      <h1>Auto-Run</h1>
+      <p class="subtitle">One task in. The right agents work it. One thread back.</p>
+    </div>
+    <div class="export-buttons">
+      <a href="/api/tasks/export/md" target="_blank">Report (.md)</a>
+      <a href="/api/tasks/export/json" target="_blank">Report (.json)</a>
+    </div>
   </header>
 
   <main>
-    <section class="panel" id="new-task-panel">
-      <h2>New task</h2>
-      <form id="task-form">
-        <label>Title <span class="hint">(optional)</span>
-          <input type="text" id="f-title" placeholder="Weekly sales summary" />
-        </label>
-        <label>Task description
-          <textarea id="f-description" rows="4" placeholder="Describe what you need done..." required></textarea>
-        </label>
-        <label>Tags <span class="hint">(comma separated, used to pick an agent)</span>
-          <input type="text" id="f-tags" placeholder="writing, analysis" />
-        </label>
-        <label>Agent <span class="hint">(optional — leave on Auto to route by tags)</span>
-          <select id="f-agent">
-            <option value="">Auto</option>
-          </select>
-        </label>
-        <button type="submit">Create task</button>
-      </form>
+    <aside class="sidebar">
+      <section class="panel">
+        <h2>Sheet</h2>
+        <form id="sync-form">
+          <label>Google Sheet ID or URL
+            <input type="text" id="f-sheet" placeholder="docs.google.com/spreadsheets/d/..." />
+          </label>
+          <button type="submit">Pull pending tasks</button>
+        </form>
+        <p class="hint" id="sheet-status">Checking credentials…</p>
+      </section>
 
-      <div class="divider">or</div>
+      <section class="panel">
+        <h2>New task</h2>
+        <form id="task-form">
+          <label>Task
+            <textarea id="f-description" rows="3" placeholder="What needs doing?" required></textarea>
+          </label>
+          <label>Platforms <span class="hint">(comma separated, in order)</span>
+            <input type="text" id="f-platforms" placeholder="Claude, ChatGPT" />
+          </label>
+          <button type="submit">Add task</button>
+        </form>
+      </section>
 
-      <form id="upload-form">
-        <label>Upload spreadsheet <span class="hint">(.xlsx/.csv, one row per task — columns: description, title, tags, agent)</span>
-          <input type="file" id="f-file" accept=".xlsx,.xls,.csv" required />
-        </label>
-        <button type="submit">Upload &amp; create tasks</button>
-      </form>
-    </section>
+      <section class="panel">
+        <h2>Council</h2>
+        <div id="agents-list" class="agents-list"></div>
+      </section>
+    </aside>
 
-    <section class="panel" id="agents-panel">
-      <h2>Agents</h2>
-      <div id="agents-list" class="agents-list"></div>
-      <p class="hint">A red dot means the tool needs a fresh login — run <code>npm run login &lt;agentId&gt;</code> in the terminal.</p>
-    </section>
-
-    <section class="panel" id="tasks-panel">
-      <div class="tasks-header">
-        <h2>Tasks</h2>
-        <div class="export-buttons">
-          <a href="/api/tasks/export/md" target="_blank">Export report (.md)</a>
-          <a href="/api/tasks/export/json" target="_blank">Export (.json)</a>
-        </div>
-      </div>
+    <section class="panel tasks-panel">
+      <h2>Tasks</h2>
       <div id="tasks-list"></div>
     </section>
   </main>

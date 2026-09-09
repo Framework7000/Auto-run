@@ -8,10 +8,13 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "node server/index.js",
-    "login": "node scripts/login.js"
+    "login": "node scripts/login.js",
+    "test": "node test/sheet-parser.test.js && node test/pipeline.test.js"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.124.0",
     "express": "^4.19.2",
+    "googleapis": "^178.1.1",
     "multer": "^2.3.0",
     "nanoid": "^3.3.7",
     "playwright": "1.56.0",

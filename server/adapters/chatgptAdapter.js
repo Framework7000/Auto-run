@@ -24,7 +24,7 @@ class ChatgptAdapter extends BaseAdapter {
     return !loggedOut;
   }
 
-  async submit(promptText) {
+  async submit(promptText, { priorOutput } = {}) {
     const page = this.page || (await this.openContext());
     await page.goto(this.config.url, { waitUntil: "domcontentloaded" });
 
@@ -32,6 +32,12 @@ class ChatgptAdapter extends BaseAdapter {
       throw new Error(
         `Not logged in to ChatGPT. Run "npm run login chatgpt" first, log in by hand, then retry.`
       );
+    }
+
+    await this.assertNotRateLimited(page);
+
+    if (priorOutput) {
+      promptText = `${promptText}\n\n--- Output from the previous step, work from this ---\n${priorOutput}`;
     }
 
     const composer = page.locator(SELECTORS.composer).first();

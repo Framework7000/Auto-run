@@ -1,5 +1,6 @@
 const path = require("path");
 const { chromium } = require("playwright");
+const { BROWSER_LIMIT_PHRASES } = require("../limits");
 
 const PROFILES_DIR = path.join(__dirname, "..", "..", "data", "browser-profiles");
 
@@ -12,9 +13,10 @@ const PROFILES_DIR = path.join(__dirname, "..", "..", "data", "browser-profiles"
  * this file never sees or stores a password.
  */
 class BaseAdapter {
-  constructor(agentConfig) {
+  constructor(agentConfig, accountId = "default") {
     this.config = agentConfig;
-    this.profileDir = path.join(PROFILES_DIR, agentConfig.id);
+    this.accountId = accountId;
+    this.profileDir = path.join(PROFILES_DIR, agentConfig.id, accountId);
   }
 
   /**
@@ -31,6 +33,21 @@ class BaseAdapter {
     return this.page;
   }
 
+  /**
+   * Chat UIs answer "you're out of quota" with a banner, not an error.
+   * Surfacing it as a thrown error with the site's own wording lets
+   * limits.js classify it as a rate limit and park the task, instead
+   * of the run failing with a confusing "couldn't find the composer".
+   */
+  async assertNotRateLimited(page) {
+    const bodyText = await page.locator("body").innerText().catch(() => "");
+    const lower = bodyText.toLowerCase();
+    const hit = BROWSER_LIMIT_PHRASES.find((phrase) => lower.includes(phrase));
+    if (hit) {
+      throw new Error(`${this.config.name} reports a usage limit ("${hit}").`);
+    }
+  }
+
   async close() {
     if (this.context) {
       await this.context.close();
@@ -40,7 +57,7 @@ class BaseAdapter {
   }
 
   // Subclasses must implement:
-  //   async submit(promptText) -> returns { output: string }
+  //   async submit(promptText, { priorOutput }) -> { output, needsInput? }
   //   async checkLoggedIn() -> returns boolean
   async submit(_promptText) {
     throw new Error(`${this.config.id} adapter does not implement submit()`);
