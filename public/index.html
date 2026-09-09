@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Auto-Run</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Auto-Run</h1>
+    <p class="subtitle">Give it a task once. It runs your agents, brings back a report, and waits for your call.</p>
+  </header>
+
+  <main>
+    <section class="panel" id="new-task-panel">
+      <h2>New task</h2>
+      <form id="task-form">
+        <label>Title <span class="hint">(optional)</span>
+          <input type="text" id="f-title" placeholder="Weekly sales summary" />
+        </label>
+        <label>Task description
+          <textarea id="f-description" rows="4" placeholder="Describe what you need done..." required></textarea>
+        </label>
+        <label>Tags <span class="hint">(comma separated, used to pick an agent)</span>
+          <input type="text" id="f-tags" placeholder="writing, analysis" />
+        </label>
+        <label>Agent <span class="hint">(optional — leave on Auto to route by tags)</span>
+          <select id="f-agent">
+            <option value="">Auto</option>
+          </select>
+        </label>
+        <button type="submit">Create task</button>
+      </form>
+
+      <div class="divider">or</div>
+
+      <form id="upload-form">
+        <label>Upload spreadsheet <span class="hint">(.xlsx/.csv, one row per task — columns: description, title, tags, agent)</span>
+          <input type="file" id="f-file" accept=".xlsx,.xls,.csv" required />
+        </label>
+        <button type="submit">Upload &amp; create tasks</button>
+      </form>
+    </section>
+
+    <section class="panel" id="agents-panel">
+      <h2>Agents</h2>
+      <div id="agents-list" class="agents-list"></div>
+      <p class="hint">A red dot means the tool needs a fresh login — run <code>npm run login &lt;agentId&gt;</code> in the terminal.</p>
+    </section>
+
+    <section class="panel" id="tasks-panel">
+      <div class="tasks-header">
+        <h2>Tasks</h2>
+        <div class="export-buttons">
+          <a href="/api/tasks/export/md" target="_blank">Export report (.md)</a>
+          <a href="/api/tasks/export/json" target="_blank">Export (.json)</a>
+        </div>
+      </div>
+      <div id="tasks-list"></div>
+    </section>
+  </main>
+
+  <div id="detail-overlay" class="overlay hidden">
+    <div class="detail-panel">
+      <button id="close-detail" class="close-btn">&times;</button>
+      <div id="detail-content"></div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

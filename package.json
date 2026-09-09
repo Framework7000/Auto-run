@@ -1,0 +1,20 @@
+{
+  "name": "auto-run",
+  "version": "0.1.0",
+  "description": "Personal task orchestrator: submit a task once, fan it out to your logged-in AI tools, review the reports, and send back feedback until you approve.",
+  "private": true,
+  "type": "commonjs",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node server/index.js",
+    "login": "node scripts/login.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "multer": "^2.3.0",
+    "nanoid": "^3.3.7",
+    "playwright": "1.56.0",
+    "xlsx": "^0.18.5"
+  }
+}

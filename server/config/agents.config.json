@@ -1,0 +1,31 @@
+{
+  "agents": [
+    {
+      "id": "claude",
+      "name": "Claude (claude.ai)",
+      "adapter": "claudeAdapter",
+      "url": "https://claude.ai/new",
+      "tags": ["coding", "analysis", "writing", "reasoning", "default"],
+      "color": "#d97757"
+    },
+    {
+      "id": "chatgpt",
+      "name": "ChatGPT (chatgpt.com)",
+      "adapter": "chatgptAdapter",
+      "url": "https://chatgpt.com/",
+      "tags": ["writing", "brainstorm", "general"],
+      "color": "#10a37f"
+    },
+    {
+      "id": "canva",
+      "name": "Canva",
+      "adapter": "canvaAdapter",
+      "url": "https://www.canva.com/",
+      "tags": ["design", "image", "presentation"],
+      "color": "#8b3dff",
+      "disabled": true,
+      "note": "Design-canvas UI, not a chat box. Not automated in v0.1 — see docs/adding-an-agent.md to build this adapter."
+    }
+  ],
+  "defaultAgentId": "claude"
+}
