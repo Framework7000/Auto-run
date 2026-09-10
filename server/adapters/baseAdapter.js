@@ -23,10 +23,18 @@ class BaseAdapter {
    * Launches (or reuses) a persistent browser context for this agent.
    * headless:false is required for the one-time manual login; normal
    * task runs default to headless using the saved session.
+   *
+   * channel:"chrome" runs the real, locally-installed Chrome instead of
+   * Playwright's bundled test Chromium. Google's sign-in flow actively
+   * blocks that bundled build ("This browser or app may not be secure")
+   * — it does not reliably accept real Chrome either, but this is the
+   * standard, documented fix (not a stealth trick), and is worth trying
+   * first. Requires Chrome to already be installed on this machine.
    */
   async openContext({ headless = true } = {}) {
     this.context = await chromium.launchPersistentContext(this.profileDir, {
       headless,
+      channel: "chrome",
       viewport: { width: 1280, height: 900 },
     });
     this.page = this.context.pages()[0] || (await this.context.newPage());
