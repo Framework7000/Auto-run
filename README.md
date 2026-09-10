@@ -71,10 +71,15 @@ npm start                   # http://localhost:4173
 
 `npm start` runs in your terminal and stops when you close it — fine for
 trying things out, not for a sheet that needs polling around the clock.
-**[docs/deploy.md](./docs/deploy.md)** covers running it as a background
-service on your own machine (via pm2), so it survives crashes and reboots
-without you relaunching it. Your account logins stay on hardware you
-control either way — nothing here needs a third-party server.
+Two ways to run it continuously, and they carry different tradeoffs for
+where your account logins actually live:
+
+- **[docs/deploy.md](./docs/deploy.md)** — as a background service on your
+  own machine (pm2). Your login sessions stay on hardware you control.
+- **[docs/cloud-deploy.md](./docs/cloud-deploy.md)** — hosted on Fly.io,
+  deployed straight from this repo (`Dockerfile` + `fly.toml` are already
+  set up and build-tested). Your login sessions live on Fly's servers
+  instead — read the tradeoff at the top of that doc before choosing this.
 
 ## ⚠️ Read this before pointing the browser agents at real accounts
 
