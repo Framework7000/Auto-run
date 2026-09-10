@@ -67,6 +67,15 @@ npm run login chatgpt gradenext-go
 npm start                   # http://localhost:4173
 ```
 
+## Running it for real (always-on)
+
+`npm start` runs in your terminal and stops when you close it — fine for
+trying things out, not for a sheet that needs polling around the clock.
+**[docs/deploy.md](./docs/deploy.md)** covers running it as a background
+service on your own machine (via pm2), so it survives crashes and reboots
+without you relaunching it. Your account logins stay on hardware you
+control either way — nothing here needs a third-party server.
+
 ## ⚠️ Read this before pointing the browser agents at real accounts
 
 The ChatGPT and Claude-browser agents work by **driving a real browser

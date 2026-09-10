@@ -1,5 +1,8 @@
 node_modules/
 data/db.json
 data/browser-profiles/
+data/google-service-account.json
+data/house-style.md
+data/logs/
 *.log
 .DS_Store
