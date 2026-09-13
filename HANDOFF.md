@@ -8,7 +8,36 @@ point a new session at so you don't have to re-explain anything.
 **To resume in a new session:** `cd ~/Auto-run` (or wherever it's cloned),
 open Claude Code, say "Read HANDOFF.md and continue from there."
 
-Last updated: commit `972c49e`, branch `claude/determined-gauss-a2vbsp`.
+Last updated: commit `408b90a` + this update, branch `claude/determined-gauss-a2vbsp`.
+
+---
+
+## Correction since last update: Canva access is real (not just a stub)
+
+`docs/adding-an-agent.md` and `canvaAdapter.js` say Canva needs custom
+per-workflow browser automation because it has no chat-shaped API. That's
+still true for driving canva.com as a website — but it turns out a **Canva
+MCP connector** exists and was live in the Claude Code Remote session this
+was built in: `list-comments`, `read-design` (metadata, page content,
+thumbnails, an editing transaction), `edit-design`, `resolve-shortlink`,
+`generate-design`, `export-design`, and more — real API access, not
+Playwright. Verified live: resolved a `canva.link` shortlink, read a real
+12-page brochure's metadata and 6 real comment threads, read a t-shirt
+design's full content and rendered its thumbnail.
+
+**This does not carry over automatically to a local Claude Code CLI
+session** — MCP connectors are configured per-client. A fresh local
+session needs its own Canva MCP server set up (or the same claude.ai
+connector auth, if the local CLI supports it) to get this same access;
+don't assume it's there without checking. If this repo ever wants
+programmatic Canva integration (as an alternative to the stubbed browser
+adapter), this connector is the real path — worth designing
+`canvaAdapter.js` around the MCP tool shapes instead of Playwright.
+
+One real gap found: `list-comments` returns comment text but not which
+page/position each comment is pinned to — fine for "here's what needs
+fixing," not enough to auto-locate it on a 12-page document without
+additional page-by-page comparison.
 
 ---
 
